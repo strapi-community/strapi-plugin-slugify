@@ -28,6 +28,8 @@ yarn add strapi-plugin-slugify
 
 The plugin configuration is stored in a config file located at `./config/plugins.js`.
 
+> Please note that the field referenced in the configuration file must exist. You can add it using the Strapi Admin UI. Also note that adding a field at a later point in time will require you to unpublish, change, save and republish the entry/entries in order for this plugin to work correctly.
+
 A sample configuration
 
 ```javascript
@@ -47,6 +49,8 @@ module.exports = ({ env }) => ({
 ```
 
 This will listen for any record created or updated in the article content type and set a slugified value for the slug field automatically based on the title field.
+
+> Note that if you want to rewrite the same field (so `title` is both a reference and a slug) then you just put `title` for both the `field` and `references` properties.
 
 **IMPORTANT NOTE**: Make sure any sensitive data is stored in env files.
 
