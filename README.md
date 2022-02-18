@@ -2,6 +2,10 @@
 
 A plugin for [Strapi](https://github.com/strapi/strapi) that provides the ability to auto slugify a field for any content type. It also provides a findOne by slug endpoint as a utility.
 
+[![Downloads](https://img.shields.io/npm/dm/strapi-plugin-slugify?style=for-the-badge)](https://img.shields.io/npm/dm/strapi-plugin-slugify?style=for-the-badge)
+[![Install size](https://img.shields.io/npm/l/strapi-plugin-slugify?style=for-the-badge)](https://img.shields.io/npm/l/strapi-plugin-slugify?style=for-the-badge)
+[![Package version](https://img.shields.io/github/v/release/ComfortablyCoding/strapi-plugin-slugify?style=for-the-badge)](https://img.shields.io/github/v/release/ComfortablyCoding/strapi-plugin-slugify?style=for-the-badge)
+
 ## Requirements
 
 The installation requirements are the same as Strapi itself and can be found in the documentation on the [Quick Start](https://strapi.io/documentation/developer-docs/latest/getting-started/quick-start.html) page in the Prerequisites info card.
@@ -76,6 +80,8 @@ Any time the respective content types have an entity created or updated the slug
 
 Hitting the `/api/slugify/slugs/:modelName/:slug` endpoint for any configured content types will return the entity type that matches the slug in the url.
 
+**IMPORTANT** The modelName is case sensitive and must match exactly with the name defined in the configuration.
+
 #### Additional Requirements
 
 Like all other created API endpoints the `findSlug` route must be allowed under `User & Permissions -> Roles -> Public/Authenticated` for the user to be able to access the route.
@@ -106,7 +112,7 @@ If an article with the slug of `lorem-ipsum-dolor` exists the reponse will look 
 }
 ```
 
-**IMPORTANT NOTE** To be inline with Strapi's default behaviour for single types if an article with the slug of `lorem-ipsum-dolor` does not exist a 404 error will be returned.
+**IMPORTANT NOTE** To be inline with Strapi's default behavior for single types if an article with the slug of `lorem-ipsum-dolor` does not exist a 404 error will be returned.
 
 ```json
 {
