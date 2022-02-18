@@ -10,7 +10,7 @@ module.exports = ({ strapi }) => ({
 
 		try {
 			if (!modelName) {
-				throw Error('A model name pah variable is required.');
+				throw Error('A model name path variable is required.');
 			}
 
 			if (!slug) {
@@ -20,13 +20,14 @@ module.exports = ({ strapi }) => ({
 			const model = models[modelName];
 			if (!model) {
 				throw Error(
-					`${modelName} model name not found, all models must be defined in the settings.`
+					`${modelName} model name not found, all models must be defined in the settings and are case sensitive.`
 				);
 			}
 
 			const { uid, field } = model;
-			let query = ctx.query;
 
+			// add slug filter to any already existing query restrictions
+			let query = ctx.query;
 			if (!query.filters) {
 				query.filters = {};
 			}
