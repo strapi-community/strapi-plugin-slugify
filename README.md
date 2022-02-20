@@ -86,38 +86,99 @@ Hitting the `/api/slugify/slugs/:modelName/:slug` endpoint for any configured co
 
 Like all other created API endpoints the `findSlug` route must be allowed under `User & Permissions -> Roles -> Public/Authenticated` for the user to be able to access the route.
 
-#### Example Request
+## Examples
+
+### Example Request
 
 Making the following request with the sample configuration will look as follows
+
+#### REST
 
 ```js
 await fetch(`${API_URL}/api/slugify/slugs/article/lorem-ipsum-dolor`);
 // GET /api/slugify/slugs/article/lorem-ipsum-dolor
 ```
 
-#### Example Response
+#### GraphQL
 
-If an article with the slug of `lorem-ipsum-dolor` exists the reponse will look the same as a single entity response
+```graphql
+{
+  findSlug(modelName:"article",slug:"lorem-ipsum-dolor"){
+    ... on ArticleEntityResponse{
+      data{
+        id
+        attributes{
+          title
+        }
+      }
+    }
+  }
+}
+```
+
+### Example Response
+
+If an article with the slug of `lorem-ipsum-dolor` exists the response will look the same as a single entity response
+
+#### REST
+
+##### Successful Response
 
 ```json
 {
 	"data": {
 		"id": 1,
-		"title": "lorem ipsum dolor",
-		"slug": "lorem-ipsum-dolor",
-		"createdAt": "2022-02-17T01:49:31.961Z",
-		"updatedAt": "2022-02-17T03:47:09.950Z",
-		"publishedAt": null
+		"attributes":{
+			"title": "lorem ipsum dolor",
+			"slug": "lorem-ipsum-dolor",
+			"createdAt": "2022-02-17T01:49:31.961Z",
+			"updatedAt": "2022-02-17T03:47:09.950Z",
+			"publishedAt": null
+		}
 	}
 }
 ```
 
-**IMPORTANT NOTE** To be inline with Strapi's default behavior for single types if an article with the slug of `lorem-ipsum-dolor` does not exist a 404 error will be returned.
+##### Error Response
+
+To be inline with Strapi's default behavior for single types if an article with the slug of `lorem-ipsum-dolor` does not exist a 404 error will be returned.
 
 ```json
 {
 	"data": null,
 	"error": { "status": 404, "name": "NotFoundError", "message": "Not Found", "details": {} }
+}
+```
+
+#### GraphQL
+
+##### Successful Response
+
+```json
+{
+  "data": {
+    "findSlug": {
+      "data": {
+        "id": "1",
+        "attributes": {
+          "title": "this is a test for slug"
+        }
+      }
+    }
+  }
+}
+```
+
+##### Error Response
+To be inline with Strapi's default behavior for single types if an article with the slug of `lorem-ipsum-dolor` does not exist the data will be null.
+
+```json
+{
+  "data": {
+    "findSlug": {
+      "data": null
+    }
+  }
 }
 ```
 
