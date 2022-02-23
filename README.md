@@ -161,7 +161,7 @@ To be inline with Strapi's default behavior for single types if an article with 
       "data": {
         "id": "1",
         "attributes": {
-          "title": "this is a test for slug"
+          "title": "lorem ipsum dolor"
         }
       }
     }
