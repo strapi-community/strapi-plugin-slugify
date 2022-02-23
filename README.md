@@ -38,17 +38,19 @@ A sample configuration
 
 ```javascript
 module.exports = ({ env }) => ({
-	slugify: {
-		enabled: true,
-		config: {
-			contentTypes: {
-				article: {
-					field: 'slug',
-					references: 'title',
-				},
-			},
-		},
-	},
+  // ...
+  slugify: {
+    enabled: true,
+    config: {
+      contentTypes: {
+        article: {
+          field: 'slug',
+          references: 'title',
+        },
+      },
+    },
+  },
+  // ...
 });
 ```
 
@@ -126,16 +128,16 @@ If an article with the slug of `lorem-ipsum-dolor` exists the response will look
 
 ```json
 {
-	"data": {
-		"id": 1,
-		"attributes":{
-			"title": "lorem ipsum dolor",
-			"slug": "lorem-ipsum-dolor",
-			"createdAt": "2022-02-17T01:49:31.961Z",
-			"updatedAt": "2022-02-17T03:47:09.950Z",
-			"publishedAt": null
-		}
-	}
+  "data": {
+    "id": 1,
+    "attributes":{
+      "title": "lorem ipsum dolor",
+      "slug": "lorem-ipsum-dolor",
+      "createdAt": "2022-02-17T01:49:31.961Z",
+      "updatedAt": "2022-02-17T03:47:09.950Z",
+      "publishedAt": null
+    }
+  }
 }
 ```
 
@@ -145,8 +147,8 @@ To be inline with Strapi's default behavior for single types if an article with 
 
 ```json
 {
-	"data": null,
-	"error": { 
+  "data": null,
+  "error": { 
     "status": 404, 
     "name": "NotFoundError", 
     "message": "Not Found", 
