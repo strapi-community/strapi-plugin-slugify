@@ -5,10 +5,10 @@ const { stringToSlug } = require('../utils/stringToSlug');
 
 module.exports = ({ strapi }) => ({
 	slugify(ctx) {
-		const { uids, slugifyOptions } = getPluginService(strapi, 'settingsService').get();
+		const { models, slugifyOptions } = getPluginService(strapi, 'settingsService').get();
 
 		const { params, model: entityModel } = ctx;
-		const model = uids[entityModel.uid];
+		const model = models[entityModel.uid];
 		const { data } = params;
 
 		if (!data) {
@@ -19,7 +19,7 @@ module.exports = ({ strapi }) => ({
 		const references = data[model.references];
 
 		// for empty values they are null, undefined means they are not on the model.
-		if (!field || typeof references === 'undefined') {
+		if (!field || typeof data[model.field] === 'undefined' || typeof references === 'undefined') {
 			return;
 		}
 

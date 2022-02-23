@@ -40,6 +40,7 @@
 		"yup": "^0.32.9"
 	},
 	"strapi": {
+		"displayName": "Slugify",
 		"name": "slugify",
 		"description": "A plugin for Strapi Headless CMS that provides the ability to auto slugify a field for any content type.",
 		"kind": "plugin"

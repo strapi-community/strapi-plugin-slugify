@@ -10,15 +10,15 @@ module.exports = ({ strapi }) => {
 	const { contentTypes, slugifyOptions } = settings;
 
 	// build settings structure
-	const uids = {};
 	const models = {};
 	_.forEach(strapi.contentTypes, (value, key) => {
 		if (contentTypes[value.modelName]) {
 			const data = {
 				uid: value.uid,
 				...contentTypes[value.modelName],
+				contentType: value,
 			};
-			uids[key] = data;
+			models[key] = data;
 			models[value.modelName] = data;
 		}
 	});
@@ -26,7 +26,6 @@ module.exports = ({ strapi }) => {
 	// reset plugin settings
 	getPluginService(strapi, 'settingsService').set({
 		models,
-		uids,
 		slugifyOptions,
 	});
 
