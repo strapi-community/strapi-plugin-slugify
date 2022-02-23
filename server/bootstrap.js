@@ -5,26 +5,16 @@ const { SUPPORTED_LIFECYCLES } = require('./utils/constants');
 const { getPluginService } = require('./utils/getPluginService');
 
 module.exports = ({ strapi }) => {
-	const settings = getPluginService(strapi, 'settingsService').get();
+	const settingsService = getPluginService(strapi, 'settingsService');
+	const settings = settingsService.get();
 
 	const { contentTypes, slugifyOptions } = settings;
 
 	// build settings structure
-	const models = {};
-	_.forEach(strapi.contentTypes, (value, key) => {
-		if (contentTypes[value.modelName]) {
-			const data = {
-				uid: value.uid,
-				...contentTypes[value.modelName],
-				contentType: value,
-			};
-			models[key] = data;
-			models[value.modelName] = data;
-		}
-	});
+	const models = settingsService.build(contentTypes);
 
 	// reset plugin settings
-	getPluginService(strapi, 'settingsService').set({
+	settingsService.set({
 		models,
 		slugifyOptions,
 	});

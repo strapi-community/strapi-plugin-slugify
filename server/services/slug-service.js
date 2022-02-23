@@ -15,15 +15,15 @@ module.exports = ({ strapi }) => ({
 			return;
 		}
 
-		const field = model.field;
-		const references = data[model.references];
+		const { field, references } = model;
+		const referenceFieldValue = data[references];
 
-		// for empty values they are null, undefined means they are not on the model.
-		if (!field || typeof data[model.field] === 'undefined' || typeof references === 'undefined') {
+		// ensure the reference field has data
+		if (typeof referenceFieldValue === 'undefined') {
 			return;
 		}
 
-		data[field] = stringToSlug(references, slugifyOptions);
+		data[field] = stringToSlug(referenceFieldValue, slugifyOptions);
 	},
 
 	async findOne(uid, query) {

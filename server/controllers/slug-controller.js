@@ -1,6 +1,7 @@
 'use strict';
 
 const { getPluginService } = require('../utils/getPluginService');
+const _ = require('lodash');
 
 module.exports = ({ strapi }) => ({
 	async findSlug(ctx) {
@@ -24,14 +25,19 @@ module.exports = ({ strapi }) => ({
 				);
 			}
 
-			const { uid, field } = model;
+			const { uid, field, contentType } = model;
 
 			// add slug filter to any already existing query restrictions
-			let query = ctx.query;
+			let query = ctx.query || {};
 			if (!query.filters) {
 				query.filters = {};
 			}
 			query.filters[field] = slug;
+
+			// only return published entries by default if content type has draftAndPublish enabled
+			if (_.get(contentType, ['options', 'draftAndPublish'], false) && !query.publicationState) {
+				query.publicationState = 'live';
+			}
 
 			const data = await getPluginService(strapi, 'slugService').findOne(uid, query);
 

@@ -56,12 +56,17 @@ const getCustomTypes = (strapi, nexus) => {
 							return toEntityResponse(null, { resourceUID: uid });
 						}
 
-						const { uid, field } = model;
+						const { uid, field, contentType } = model;
 						let query = {
 							filters: {
 								[field]: slug,
 							},
 						};
+
+						// only return published entries
+						if (_.get(contentType, ['options', 'draftAndPublish'], false)) {
+							query.publicationState = 'live';
+						}
 
 						const data = await getPluginService(strapi, 'slugService').findOne(uid, query);
 						return toEntityResponse(data, { resourceUID: uid });
