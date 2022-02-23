@@ -25,7 +25,7 @@ const getCustomTypes = (strapi, nexus) => {
 	// build custom union type based on defined models
 	const FindSlugResponse = nexus.unionType({
 		name: 'FindSlugResponse',
-		description: 'Any container type that can be rendered into the feed',
+		description: 'Union Type of all registered slug content types',
 		definition(t) {
 			t.members(...findSlugTypes.response);
 		},
