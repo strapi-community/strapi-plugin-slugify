@@ -146,7 +146,12 @@ To be inline with Strapi's default behavior for single types if an article with 
 ```json
 {
 	"data": null,
-	"error": { "status": 404, "name": "NotFoundError", "message": "Not Found", "details": {} }
+	"error": { 
+    "status": 404, 
+    "name": "NotFoundError", 
+    "message": "Not Found", 
+    "details": {} 
+  }
 }
 ```
 
