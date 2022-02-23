@@ -1,5 +1,6 @@
 const _ = require('lodash');
 const { getPluginService } = require('../utils/getPluginService');
+const { ValidationError } = require('@strapi/utils').errors;
 
 const getCustomTypes = (strapi, nexus) => {
 	const { naming } = getPluginService(strapi, 'utils', 'graphql');
@@ -45,7 +46,7 @@ const getCustomTypes = (strapi, nexus) => {
 						modelName: nexus.stringArg('The model name of the content type'),
 						slug: nexus.stringArg('The slug to query for'),
 					},
-					resolve: async (_, args) => {
+					resolve: async (_parent, args) => {
 						const { models } = getPluginService(strapi, 'settingsService').get();
 						const { modelName, slug } = args;
 
@@ -53,7 +54,9 @@ const getCustomTypes = (strapi, nexus) => {
 
 						// ensure valid model is passed
 						if (!model) {
-							return toEntityResponse(null, { resourceUID: uid });
+							throw new ValidationError(
+								`${modelName} model name not found, all models must be defined in the settings and are case sensitive.`
+							);
 						}
 
 						const { uid, field, contentType } = model;
