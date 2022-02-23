@@ -19,7 +19,7 @@ const getCustomTypes = (strapi, nexus) => {
 
 	// ensure we have at least one type before attempting to register
 	if (!findSlugTypes.response.length) {
-		return;
+		return [];
 	}
 
 	// build custom union type based on defined models
@@ -50,6 +50,12 @@ const getCustomTypes = (strapi, nexus) => {
 						const { modelName, slug } = args;
 
 						const model = models[modelName];
+
+						// ensure valid model is passed
+						if (!model) {
+							return toEntityResponse(null, { resourceUID: uid });
+						}
+
 						const { uid, field } = model;
 						let query = {
 							filters: {
