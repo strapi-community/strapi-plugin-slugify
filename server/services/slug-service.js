@@ -1,5 +1,6 @@
 'use strict';
 
+const _ = require('lodash');
 const { getPluginService } = require('../utils/getPluginService');
 const { stringToSlug } = require('../utils/stringToSlug');
 
@@ -29,6 +30,17 @@ module.exports = ({ strapi }) => ({
 	async findOne(uid, query) {
 		const slugs = await strapi.entityService.findMany(uid, query);
 
-		return slugs.length ? slugs[0] : null;
+		// single
+		if (slugs && _.isPlainObject(slugs)) {
+			return slugs;
+		}
+
+		// collection
+		if (slugs && _.isArray(slugs) && slugs.length) {
+			return slugs[0];
+		}
+
+		// no result
+		return null;
 	},
 });

@@ -36,6 +36,7 @@
 	},
 	"peerDependencies": {
 		"@strapi/strapi": "^4.0.7",
+		"@strapi/utils": "^4.0.7",
 		"lodash": "^4.17.21",
 		"yup": "^0.32.9"
 	},

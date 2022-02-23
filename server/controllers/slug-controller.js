@@ -1,7 +1,8 @@
 'use strict';
 
-const { getPluginService } = require('../utils/getPluginService');
 const _ = require('lodash');
+const { getPluginService } = require('../utils/getPluginService');
+const { transformResponse } = require('../utils/transformEntry');
 
 module.exports = ({ strapi }) => ({
 	async findSlug(ctx) {
@@ -42,9 +43,10 @@ module.exports = ({ strapi }) => ({
 			const data = await getPluginService(strapi, 'slugService').findOne(uid, query);
 
 			if (data) {
-				return ctx.send({ data });
+				ctx.body = transformResponse(data);
+			} else {
+				ctx.notFound();
 			}
-			ctx.notFound();
 		} catch (error) {
 			ctx.badRequest(error.message);
 		}
