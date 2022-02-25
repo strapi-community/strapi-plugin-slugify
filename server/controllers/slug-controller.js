@@ -1,6 +1,7 @@
 'use strict';
 
 const _ = require('lodash');
+const { sanitize } = require('@strapi/utils');
 const { getPluginService } = require('../utils/getPluginService');
 const { transformResponse } = require('@strapi/strapi/lib/core-api/controller/transform');
 
@@ -43,7 +44,8 @@ module.exports = ({ strapi }) => ({
 			const data = await getPluginService(strapi, 'slugService').findOne(uid, query);
 
 			if (data) {
-				ctx.body = transformResponse(data);
+				const sanitizedEntity = await sanitize.contentAPI.output(data, contentType);
+				ctx.body = transformResponse(sanitizedEntity);
 			} else {
 				ctx.notFound();
 			}
