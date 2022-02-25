@@ -2,7 +2,7 @@
 
 const _ = require('lodash');
 const { getPluginService } = require('../utils/getPluginService');
-const { transformResponse } = require('../utils/transformEntry');
+const { transformResponse } = require('@strapi/strapi/lib/core-api/controller/transform');
 
 module.exports = ({ strapi }) => ({
 	async findSlug(ctx) {
