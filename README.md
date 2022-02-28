@@ -82,7 +82,7 @@ Any time the respective content types have an entity created or updated the slug
 
 ### Find One by Slug
 
-Hitting the `/api/slugify/slugs/:modelName/:slug` endpoint for any configured content types will return the entity type that matches the slug in the url.
+Hitting the `/api/slugify/slugs/:modelName/:slug` endpoint for any configured content types will return the entity type that matches the slug in the url. Additionally an optional query parameter of `/api/slugify/slugs/:modelName/:slug?publicationState=<publicationState>` can be appended to the request, which accepts either `live` or `preview` as a parameter and will return a content type according to its publication state.
 
 **IMPORTANT** The modelName is case sensitive and must match exactly with the name defined in the configuration.
 
@@ -99,7 +99,7 @@ Making the following request with the sample configuration will look as follows
 #### REST
 
 ```js
-await fetch(`${API_URL}/api/slugify/slugs/article/lorem-ipsum-dolor`);
+await fetch(`${API_URL}/api/slugify/slugs/article/lorem-ipsum-dolor?publicationState=preview`);
 // GET /api/slugify/slugs/article/lorem-ipsum-dolor
 ```
 
@@ -107,7 +107,7 @@ await fetch(`${API_URL}/api/slugify/slugs/article/lorem-ipsum-dolor`);
 
 ```graphql
 {
-  findSlug(modelName:"article",slug:"lorem-ipsum-dolor"){
+  findSlug(modelName:"article",slug:"lorem-ipsum-dolor",publicationState:"preview"){
     ... on ArticleEntityResponse{
       data{
         id
