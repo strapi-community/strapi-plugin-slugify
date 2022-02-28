@@ -17,19 +17,24 @@ module.exports = ({ strapi }) => ({
 		}
 
 		const { field, references } = model;
-		const referenceFieldValue = data[references];
 
 		// ensure the reference field has data
-		if (typeof referenceFieldValue === 'undefined') {
+		let referenceFieldValues = references
+			.filter((r) => typeof data[r] !== 'undefined' && data[r].length)
+			.map((r) => data[r]);
+
+		const hasUndefinedFields = referenceFieldValues.length < references.length;
+		if ((!settings.skipUndefinedReferences && hasUndefinedFields) || !referenceFieldValues.length) {
 			return;
 		}
 
+		referenceFieldValues = referenceFieldValues.join(' ');
 		if (settings.slugifyWithCount) {
-			data[field] = toSlugWithCount(referenceFieldValue, settings.slugifyOptions);
+			data[field] = toSlugWithCount(referenceFieldValues, settings.slugifyOptions);
 			return;
 		}
 
-		data[field] = toSlug(referenceFieldValue, settings.slugifyOptions);
+		data[field] = toSlug(referenceFieldValues, settings.slugifyOptions);
 	},
 
 	async findOne(uid, query) {
