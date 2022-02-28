@@ -67,7 +67,8 @@ This will listen for any record created or updated in the article content type a
 | contentTypes | The Content Types to add auto slugification and search findOne by slug search utility to | Object | {} | No |
 | contentTypes[modelName] | The model name of the content type (it is the `singularName` in the [model schema](https://docs.strapi.io/developer-docs/latest/development/backend-customization/models.html#model-schema)) | String | N/A | Yes |
 | contentTypes[modelName]field | The name of the field to add the slug  | String | N/A | Yes |
-| contentTypes[modelName]references | The name of the field that is used to build the slug | String | N/A     | Yes |
+| contentTypes[modelName]references | The name of the field that is used to build the slug | String | N/A | Yes |
+| SlugifyWithCount | Duplicate strings will have their occurrence appended to the end of the slug | Boolean | false | No |
 | slugifyOptions | The options to pass the the slugify function. All options can be found in the [slugify docs](https://github.com/sindresorhus/slugify#api) | Object | {} | No |
 
 ## Usage

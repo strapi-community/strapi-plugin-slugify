@@ -7,6 +7,7 @@ module.exports = {
 		return {
 			contentTypes: {},
 			slugifyOptions: {},
+			slugifyWithCount: false,
 		};
 	},
 	async validator(config) {

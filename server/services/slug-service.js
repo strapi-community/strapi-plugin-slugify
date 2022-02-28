@@ -2,15 +2,15 @@
 
 const _ = require('lodash');
 const { getPluginService } = require('../utils/getPluginService');
-const { stringToSlug } = require('../utils/stringToSlug');
+const { toSlug, toSlugWithCount } = require('../utils/slugification');
 
 module.exports = ({ strapi }) => ({
 	slugify(ctx) {
-		const { models, slugifyOptions } = getPluginService(strapi, 'settingsService').get();
-
+		const settings = getPluginService(strapi, 'settingsService').get();
 		const { params, model: entityModel } = ctx;
-		const model = models[entityModel.uid];
 		const { data } = params;
+
+		const model = settings.models[entityModel.uid];
 
 		if (!data) {
 			return;
@@ -24,7 +24,12 @@ module.exports = ({ strapi }) => ({
 			return;
 		}
 
-		data[field] = stringToSlug(referenceFieldValue, slugifyOptions);
+		if (settings.slugifyWithCount) {
+			data[field] = toSlugWithCount(referenceFieldValue, settings.slugifyOptions);
+			return;
+		}
+
+		data[field] = toSlug(referenceFieldValue, settings.slugifyOptions);
 	},
 
 	async findOne(uid, query) {
