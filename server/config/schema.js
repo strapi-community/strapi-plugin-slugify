@@ -6,9 +6,8 @@ const _ = require('lodash');
 const pluginConfigSchema = yup.object().shape({
 	slugifyOptions: yup.object(),
 	contentTypes: yup.lazy((obj) => {
-		// eslint-disable-next-line no-unused-vars
 		let shape = {};
-		_.each(obj, (_, key) => {
+		_.each(obj, (_value, key) => {
 			shape[key] = yup.object().shape({
 				field: yup.string().required(),
 				references: yup.string().required(),
@@ -16,6 +15,7 @@ const pluginConfigSchema = yup.object().shape({
 		});
 		return yup.object().shape(shape);
 	}),
+	slugifyWithCount: yup.bool(),
 });
 
 module.exports = {
