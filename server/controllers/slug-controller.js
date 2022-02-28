@@ -1,15 +1,15 @@
 'use strict';
 
 const _ = require('lodash');
-const { sanitize } = require('@strapi/utils');
 const { getPluginService } = require('../utils/getPluginService');
-const { transformResponse } = require('@strapi/strapi/lib/core-api/controller/transform');
+const { transformResponse } = require('../utils/transformEntry');
 
 module.exports = ({ strapi }) => ({
 	async findSlug(ctx) {
 		const { models } = getPluginService(strapi, 'settingsService').get();
 		const { params } = ctx.request;
 		const { modelName, slug } = params;
+		const { publicationState } = ctx.request.query;
 
 		try {
 			if (!modelName) {
@@ -36,16 +36,17 @@ module.exports = ({ strapi }) => ({
 			}
 			query.filters[field] = slug;
 
-			// only return published entries by default if content type has draftAndPublish enabled
-			if (_.get(contentType, ['options', 'draftAndPublish'], false) && !query.publicationState) {
-				query.publicationState = 'live';
+			// return entries based on publicationState param or default to only returning published entries when draftAndPublish mode is enabled
+			if (_.get(contentType, ['options', 'draftAndPublish'], false) && publicationState) {
+				query.publicationState = publicationState;
+			} else if (_.get(contentType, ['options', 'draftAndPublish'], false)) {
+				query.publicationState = "live";
 			}
 
 			const data = await getPluginService(strapi, 'slugService').findOne(uid, query);
 
 			if (data) {
-				const sanitizedEntity = await sanitize.contentAPI.output(data, contentType);
-				ctx.body = transformResponse(sanitizedEntity);
+				ctx.body = transformResponse(data);
 			} else {
 				ctx.notFound();
 			}
