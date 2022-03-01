@@ -44,7 +44,8 @@ module.exports = ({ strapi }) => ({
 			const data = await getPluginService(strapi, 'slugService').findOne(uid, query);
 
 			if (data) {
-				const sanitizedEntity = await sanitize.contentAPI.output(data, contentType);
+				const auth = ctx.state.auth || {};
+				const sanitizedEntity = await sanitize.contentAPI.output(data, contentType, { auth });
 				ctx.body = transformResponse(sanitizedEntity);
 			} else {
 				ctx.notFound();
