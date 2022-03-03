@@ -51,13 +51,14 @@ const getCustomTypes = (strapi, nexus) => {
 					},
 					resolve: async (_parent, args, ctx) => {
 						const { models } = getPluginService(strapi, 'settingsService').get();
-						const { modelName, slug } = args;
+						const { modelName, slug, publicationState } = args;
 						const { auth } = ctx.state;
 
 						isValidFindSlugParams({
 							modelName,
 							slug,
 							models,
+							publicationState
 						});
 
 						const { uid, field, contentType } = models[modelName];
@@ -72,11 +73,13 @@ const getCustomTypes = (strapi, nexus) => {
 						};
 
 						// return entries based on publicationState arg or default to only returning published entries when draftAndPublish mode is enabled
-						if (_.get(contentType, ['options', 'draftAndPublish'], false) && publicationState) {
-							query.publicationState = publicationState;
-						} else if (_.get(contentType, ['options', 'draftAndPublish'], false)) {
+						if (_.get(contentType, ['options', 'draftAndPublish'], false)) {
 							query.publicationState = "live";
-						}
+							
+							if (publicationState) {
+								query.publicationState = publicationState;
+							}
+						} 
 
 						const data = await getPluginService(strapi, 'slugService').findOne(uid, query);
 						const sanitizedEntity = await sanitizeOutput(data, contentType, auth);

@@ -5,7 +5,8 @@ const isValidFindSlugParams = (params) => {
 		throw new ValidationError('A model and slug must be provided.');
 	}
 
-	const { modelName, slug, models } = params;
+	const { modelName, slug, models, publicationState } = params;
+	const model = models[modelName];
 
 	if (!modelName) {
 		throw new ValidationError('A model name path variable is required.');
@@ -15,7 +16,9 @@ const isValidFindSlugParams = (params) => {
 		throw new ValidationError('A slug path variable is required.');
 	}
 
-	const model = models[modelName];
+	if (!model.contentType.options.draftAndPublish && publicationState) {
+		throw new ValidationError('Draft and Publish is not enabled for this content-type. Please enable Draft and Publish if you want to filter by publication state.')
+	}
 
 	// ensure valid model is passed
 	if (!model) {
