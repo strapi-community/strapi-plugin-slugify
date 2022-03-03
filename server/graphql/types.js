@@ -1,6 +1,8 @@
 const _ = require('lodash');
 const { getPluginService } = require('../utils/getPluginService');
-const { ValidationError } = require('@strapi/utils').errors;
+const { isValidFindSlugParams } = require('../utils/isValidFindSlugParams');
+const { hasRequiredModelScopes } = require('../utils/hasRequiredModelScopes');
+const { sanitizeOutput } = require('../utils/sanitizeOutput');
 
 const getCustomTypes = (strapi, nexus) => {
 	const { naming } = getPluginService(strapi, 'utils', 'graphql');
@@ -46,20 +48,22 @@ const getCustomTypes = (strapi, nexus) => {
 						modelName: nexus.stringArg('The model name of the content type'),
 						slug: nexus.stringArg('The slug to query for'),
 					},
-					resolve: async (_parent, args) => {
+					resolve: async (_parent, args, ctx) => {
 						const { models } = getPluginService(strapi, 'settingsService').get();
 						const { modelName, slug } = args;
+						const { auth } = ctx.state;
 
-						const model = models[modelName];
+						isValidFindSlugParams({
+							modelName,
+							slug,
+							models,
+						});
 
-						// ensure valid model is passed
-						if (!model) {
-							throw new ValidationError(
-								`${modelName} model name not found, all models must be defined in the settings and are case sensitive.`
-							);
-						}
+						const { uid, field, contentType } = models[modelName];
 
-						const { uid, field, contentType } = model;
+						await hasRequiredModelScopes(strapi, uid, auth);
+
+						// build query
 						let query = {
 							filters: {
 								[field]: slug,
@@ -72,7 +76,8 @@ const getCustomTypes = (strapi, nexus) => {
 						}
 
 						const data = await getPluginService(strapi, 'slugService').findOne(uid, query);
-						return toEntityResponse(data, { resourceUID: uid });
+						const sanitizedEntity = await sanitizeOutput(data, contentType, auth);
+						return toEntityResponse(sanitizedEntity, { resourceUID: uid });
 					},
 				});
 			},
