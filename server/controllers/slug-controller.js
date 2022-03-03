@@ -1,33 +1,43 @@
 'use strict';
 
 const _ = require('lodash');
-const { sanitize } = require('@strapi/utils');
+const { sanitize, errors } = require('@strapi/utils');
 const { getPluginService } = require('../utils/getPluginService');
 const { transformResponse } = require('@strapi/strapi/lib/core-api/controller/transform');
+
+const { ValidationError, ForbiddenError } = errors;
 
 module.exports = ({ strapi }) => ({
 	async findSlug(ctx) {
 		const { models } = getPluginService(strapi, 'settingsService').get();
-		const { params } = ctx.request;
-		const { modelName, slug } = params;
+		const { modelName, slug } = ctx.request.params;
+		const { auth } = ctx.state;
 
 		try {
 			if (!modelName) {
-				throw Error('A model name path variable is required.');
+				throw new ValidationError('A model name path variable is required.');
 			}
 
 			if (!slug) {
-				throw Error('A slug path variable is required.');
+				throw new ValidationError('A slug path variable is required.');
 			}
 
 			const model = models[modelName];
 			if (!model) {
-				throw Error(
+				throw new ValidationError(
 					`${modelName} model name not found, all models must be defined in the settings and are case sensitive.`
 				);
 			}
 
 			const { uid, field, contentType } = model;
+
+			// Check if the user making the request has the
+			// `find` permission on the targeted model.
+			try {
+				await strapi.auth.verify(auth, { scope: `${uid}.findOne` });
+			} catch (e) {
+				throw new ForbiddenError();
+			}
 
 			// add slug filter to any already existing query restrictions
 			let query = ctx.query || {};
@@ -44,7 +54,7 @@ module.exports = ({ strapi }) => ({
 			const data = await getPluginService(strapi, 'slugService').findOne(uid, query);
 
 			if (data) {
-				const sanitizedEntity = await sanitize.contentAPI.output(data, contentType);
+				const sanitizedEntity = await sanitize.contentAPI.output(data, contentType, { auth });
 				ctx.body = transformResponse(sanitizedEntity);
 			} else {
 				ctx.notFound();
