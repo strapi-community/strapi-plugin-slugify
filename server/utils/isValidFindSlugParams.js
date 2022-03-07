@@ -1,4 +1,5 @@
 const { ValidationError } = require('@strapi/utils/lib/errors');
+const _ = require('lodash');
 
 const isValidFindSlugParams = (params) => {
 	if (!params) {
@@ -16,7 +17,7 @@ const isValidFindSlugParams = (params) => {
 		throw new ValidationError('A slug path variable is required.');
 	}
 
-	if (!model.contentType.options.draftAndPublish && publicationState) {
+	if (_.get(contentType, ['options', 'draftAndPublish'], false) && publicationState) {
 		throw new ValidationError('Filtering by publication state is only supported for content types that have Draft and Publish enabled.')
 	}
 
