@@ -120,8 +120,7 @@ await fetch(`${API_URL}/api/slugify/slugs/article/lorem-ipsum-dolor`);
 }
 ```
 
-Additionally a `publicationState` arg can be passed to the GraphQl query that accepts either `preview` or `live` as input, if `draftAndPublish`
-is enabled for the content-type.
+Additionally  if `draftAndPublish` is enabled for the content-type a `publicationState` arg can be passed to the GraphQL query that accepts either `preview` or `live` as input.
 
 **IMPORTANT** Please beware that the request for an entry in `preview` will return both draft entries & published entries as per Strapi default.
 
