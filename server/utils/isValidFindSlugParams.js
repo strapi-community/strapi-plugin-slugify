@@ -17,7 +17,7 @@ const isValidFindSlugParams = (params) => {
 	}
 
 	if (!model.contentType.options.draftAndPublish && publicationState) {
-		throw new ValidationError('Draft and Publish is not enabled for this content-type. Please enable Draft and Publish if you want to filter by publication state.')
+		throw new ValidationError('Filtering by publication state is only supported for content types that have Draft and Publish enabled.')
 	}
 
 	// ensure valid model is passed
