@@ -72,13 +72,9 @@ const getCustomTypes = (strapi, nexus) => {
 							},
 						};
 
-						// return entries based on publicationState arg or default to only returning published entries when draftAndPublish mode is enabled
+						// only return published entries by default if content type has draftAndPublish enabled
 						if (_.get(contentType, ['options', 'draftAndPublish'], false)) {
-							query.publicationState = "live";
-							
-							if (publicationState) {
-								query.publicationState = publicationState;
-							}
+							query.publicationState = publicationState || 'live';
 						} 
 
 						const data = await getPluginService(strapi, 'slugService').findOne(uid, query);
