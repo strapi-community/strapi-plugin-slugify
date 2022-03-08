@@ -47,16 +47,18 @@ const getCustomTypes = (strapi, nexus) => {
 					args: {
 						modelName: nexus.stringArg('The model name of the content type'),
 						slug: nexus.stringArg('The slug to query for'),
+						publicationState: nexus.stringArg('The publication state of the entry')
 					},
 					resolve: async (_parent, args, ctx) => {
 						const { models } = getPluginService(strapi, 'settingsService').get();
-						const { modelName, slug } = args;
+						const { modelName, slug, publicationState } = args;
 						const { auth } = ctx.state;
 
 						isValidFindSlugParams({
 							modelName,
 							slug,
 							models,
+							publicationState
 						});
 
 						const { uid, field, contentType } = models[modelName];
@@ -70,10 +72,10 @@ const getCustomTypes = (strapi, nexus) => {
 							},
 						};
 
-						// only return published entries
+						// only return published entries by default if content type has draftAndPublish enabled
 						if (_.get(contentType, ['options', 'draftAndPublish'], false)) {
-							query.publicationState = 'live';
-						}
+							query.publicationState = publicationState || 'live';
+						} 
 
 						const data = await getPluginService(strapi, 'slugService').findOne(uid, query);
 						const sanitizedEntity = await sanitizeOutput(data, contentType, auth);

@@ -82,7 +82,7 @@ Any time the respective content types have an entity created or updated the slug
 
 ### Find One by Slug
 
-Hitting the `/api/slugify/slugs/:modelName/:slug` endpoint for any configured content types will return the entity type that matches the slug in the url.
+Hitting the `/api/slugify/slugs/:modelName/:slug` endpoint for any configured content types will return the entity type that matches the slug in the url. Additionally the endpoint accepts any of the parameters that can be added to the routes built into Strapi.
 
 **IMPORTANT** The modelName is case sensitive and must match exactly with the name defined in the configuration.
 
@@ -108,6 +108,25 @@ await fetch(`${API_URL}/api/slugify/slugs/article/lorem-ipsum-dolor`);
 ```graphql
 {
   findSlug(modelName:"article",slug:"lorem-ipsum-dolor"){
+    ... on ArticleEntityResponse{
+      data{
+        id
+        attributes{
+          title
+        }
+      }
+    }
+  }
+}
+```
+
+Additionally  if `draftAndPublish` is enabled for the content-type a `publicationState` arg can be passed to the GraphQL query that accepts either `preview` or `live` as input.
+
+**IMPORTANT** Please beware that the request for an entry in `preview` will return both draft entries & published entries as per Strapi default.
+
+```graphql
+{
+  findSlug(modelName:"article",slug:"lorem-ipsum-dolor",publicationState:"preview"){
     ... on ArticleEntityResponse{
       data{
         id
