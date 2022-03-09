@@ -17,7 +17,7 @@ const isValidFindSlugParams = (params) => {
 		throw new ValidationError('A slug path variable is required.');
 	}
 
-	if (_.get(model, ['contentType', 'options', 'draftAndPublish'], false) && publicationState) {
+	if (!_.get(model, ['contentType', 'options', 'draftAndPublish'], false) && publicationState) {
 		throw new ValidationError('Filtering by publication state is only supported for content types that have Draft and Publish enabled.')
 	}
 
