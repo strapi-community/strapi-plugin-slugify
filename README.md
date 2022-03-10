@@ -20,11 +20,9 @@ The installation requirements are the same as Strapi itself and can be found in 
 
 ```sh
 npm install strapi-plugin-slugify
-```
 
-**or**
+# or
 
-```sh
 yarn add strapi-plugin-slugify
 ```
 
@@ -60,7 +58,11 @@ This will listen for any record created or updated in the article content type a
 
 **IMPORTANT NOTE**: Make sure any sensitive data is stored in env files.
 
-### The Complete Plugin Configuration Object
+### Additional Requirement for GraphQL
+
+Per [#35](https://github.com/ComfortablyCoding/strapi-plugin-slugify/issues/35) please ensure that the slugify plugin configuration is placed **after** the graphql plugin configuration.
+
+## The Complete Plugin Configuration Object
 
 | Property | Description | Type | Default | Required |
 | -------- | ----------- | ---- | ------- | -------- |
