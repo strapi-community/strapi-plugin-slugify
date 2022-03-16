@@ -40,7 +40,7 @@ module.exports = ({ strapi }) => ({
 
 		if (data) {
 			const sanitizedEntity = await sanitizeOutput(data, contentType, auth);
-			ctx.body = transformResponse(sanitizedEntity);
+			ctx.body = transformResponse(sanitizedEntity, {}, { contentType });
 		} else {
 			throw new NotFoundError();
 		}
