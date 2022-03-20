@@ -60,7 +60,7 @@ This will listen for any record created or updated in the article content type a
 
 ### Additional Requirement for GraphQL
 
-Per [#35](https://github.com/ComfortablyCoding/strapi-plugin-slugify/issues/35) please ensure that the slugify plugin configuration is placed **after** the graphql plugin configuration.
+Per [#35](https://github.com/ComfortablyCoding/strapi-plugin-slugify/issues/35) please ensure that the slugify plugin configuration is placed **before** the graphql plugin configuration.
 
 ## The Complete Plugin Configuration Object
 
