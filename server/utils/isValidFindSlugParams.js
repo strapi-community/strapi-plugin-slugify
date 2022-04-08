@@ -18,7 +18,9 @@ const isValidFindSlugParams = (params) => {
 	}
 
 	if (!_.get(model, ['contentType', 'options', 'draftAndPublish'], false) && publicationState) {
-		throw new ValidationError('Filtering by publication state is only supported for content types that have Draft and Publish enabled.')
+		throw new ValidationError(
+			'Filtering by publication state is only supported for content types that have Draft and Publish enabled.'
+		);
 	}
 
 	// ensure valid model is passed
