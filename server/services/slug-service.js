@@ -11,7 +11,6 @@ module.exports = ({ strapi }) => ({
 		const { data } = params;
 
 		const model = settings.models[entityModel.uid];
-
 		if (!data) {
 			return;
 		}
@@ -22,6 +21,21 @@ module.exports = ({ strapi }) => ({
 		let referenceFieldValues = references
 			.filter((r) => typeof data[r] !== 'undefined' && data[r].length)
 			.map((r) => data[r]);
+
+
+		// If there is an existing reference then don't generate a new slug.
+		if (ctx.params.where && ctx.params.where.id) {
+			const current = await strapi.entityService.findOne(entityModel.uid, ctx.params.where.id);
+			if (current) {
+				let currentReferenceFieldValues = references
+					.filter((r) => typeof current[r] !== 'undefined' && current[r].length)
+					.map((r) => current[r]);
+
+				if (JSON.stringify(referenceFieldValues) == JSON.stringify(currentReferenceFieldValues)) {
+					return
+				}
+			}
+		}
 
 		const hasUndefinedFields = referenceFieldValues.length < references.length;
 		if ((!settings.skipUndefinedReferences && hasUndefinedFields) || !referenceFieldValues.length) {
