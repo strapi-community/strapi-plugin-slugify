@@ -71,6 +71,7 @@ Per [#35](https://github.com/ComfortablyCoding/strapi-plugin-slugify/issues/35) 
 | contentTypes[modelName]field | The name of the field to add the slug  | String | N/A | Yes |
 | contentTypes[modelName]references | The name(s) of the field(s) used to build the slug. If an array of fields is set it will result in a compound slug | String or Array | N/A | Yes |
 | slugifyWithCount | Duplicate strings will have their occurrence appended to the end of the slug | Boolean | false | No |
+| updateSlugs | If referenced fields have updates also update the slug. | Boolean | false | No |
 | skipUndefinedReferences | Skip reference fields that have no data. Mostly applicable to compound slug | Boolean | false | No |
 | slugifyOptions | The options to pass the the slugify function. All options can be found in the [slugify docs](https://github.com/sindresorhus/slugify#api) | Object | {} | No |
 

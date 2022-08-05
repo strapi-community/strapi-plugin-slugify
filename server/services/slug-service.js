@@ -48,9 +48,9 @@ module.exports = ({ strapi }) => ({
 			}
 		}
 
-		// Make sure we are only updating if there isn't a slug, this is a new instance or the currently
-		// referenced fields don't match with the updated values.
-		if (shouldUpdate || !current || !data[field]) {
+		// Reference the updateSlugs settings to determine if user wants slugs to be updated.
+		// If there isn't a current reference then proceed.
+		if ((shouldUpdate && settings.updateSlugs) || !current || !data[field]) {
 			const hasUndefinedFields = referenceFieldValues.length < references.length;
 			if ((!settings.skipUndefinedReferences && hasUndefinedFields) || !referenceFieldValues.length) {
 				return;
@@ -62,6 +62,7 @@ module.exports = ({ strapi }) => ({
 			} else {
 				data[field] = toSlug(referenceFieldValues, settings.slugifyOptions);
 			}
+			console.log(data[field])
 		}
 
 	},
