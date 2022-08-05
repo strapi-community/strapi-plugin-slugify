@@ -62,7 +62,6 @@ module.exports = ({ strapi }) => ({
 			} else {
 				data[field] = toSlug(referenceFieldValues, settings.slugifyOptions);
 			}
-			console.log(data[field])
 		}
 
 	},
