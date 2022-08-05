@@ -20,8 +20,8 @@ module.exports = ({ strapi }) => {
 	};
 
 	SUPPORTED_LIFECYCLES.forEach((lifecycle) => {
-		subscribe[lifecycle] = (ctx) => {
-			getPluginService(strapi, 'slugService').slugify(ctx);
+		subscribe[lifecycle] = async (ctx) => {
+			await getPluginService(strapi, 'slugService').slugify(ctx);
 		};
 	});
 
