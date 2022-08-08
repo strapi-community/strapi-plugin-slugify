@@ -10,15 +10,14 @@ module.exports = ({ strapi }) => ({
 		const { params, model: entityModel } = ctx;
 
 		// Check to see if we have an existing reference and if it matches.
-		if (ctx.params.where && ctx.params.where.id) {
-			let current = await strapi.entityService.findOne(entityModel.uid, ctx.params.where.id)
-			this.update(ctx, current)
-		} else {
-			this.update(ctx)
+		let current = null;
+		if (params.where && params.where.id) {
+			let current = await strapi.entityService.findOne(entityModel.uid, params.where.id)
 		}
+		this.update(ctx, current)
 	},
 
-	update(ctx, current = null) {
+	update(ctx, current) {
 
 		const settings = getPluginService(strapi, 'settingsService').get();
 		const { params, model: entityModel } = ctx;
