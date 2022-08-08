@@ -37,14 +37,8 @@ module.exports = ({ strapi }) => ({
 
 
 		let shouldUpdate = true
-		if (current) {
-			let currentReferenceFieldValues = references
-				.filter((r) => typeof current[r] !== 'undefined' && current[r].length)
-				.map((r) => current[r]);
-
-			if (JSON.stringify(referenceFieldValues) == JSON.stringify(currentReferenceFieldValues)) {
-				shouldUpdate = false
-			}
+		if (current && current[field]) {
+		    shouldUpdate = true;
 		}
 
 		// Reference the updateSlugs settings to determine if user wants slugs to be updated.
