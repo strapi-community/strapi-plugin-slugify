@@ -38,7 +38,7 @@ module.exports = ({ strapi }) => ({
 
 		let shouldUpdate = true
 		if (current && current[field]) {
-		    shouldUpdate = true;
+			shouldUpdate = true;
 		}
 
 		// Reference the updateSlugs settings to determine if user wants slugs to be updated.
@@ -55,7 +55,6 @@ module.exports = ({ strapi }) => ({
 			} else {
 				data[field] = toSlug(referenceFieldValues, settings.slugifyOptions);
 			}
-			console.log(data[field])
 		}
 
 	},
