@@ -18,7 +18,7 @@ const pluginConfigSchema = yup.object().shape({
 		return yup.object().shape(shape);
 	}),
 	slugifyWithCount: yup.bool(),
-	updateSlugs: yup.bool(),
+	shouldUpdateSlug: yup.bool(),
 	skipUndefinedReferences: yup.bool(),
 });
 
