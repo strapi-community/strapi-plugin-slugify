@@ -12,7 +12,7 @@ module.exports = ({ strapi }) => ({
 		// Check to see if we have an existing reference and if it matches.
 		let current = null;
 		if (params.where && params.where.id) {
-			await strapi.entityService.findOne(entityModel.uid, params.where.id)
+			current = await strapi.entityService.findOne(entityModel.uid, params.where.id)
 		}
 		this.update(ctx, current)
 	},
