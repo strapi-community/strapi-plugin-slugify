@@ -37,8 +37,14 @@ module.exports = ({ strapi }) => ({
 
 
 		let shouldUpdate = true
-		if (current && current[field]) {
-			shouldUpdate = true;
+		if (current) {
+			let currentReferenceFieldValues = references
+				.filter((r) => typeof current[r] !== 'undefined' && current[r].length)
+				.map((r) => current[r]);
+
+			if (JSON.stringify(referenceFieldValues) == JSON.stringify(currentReferenceFieldValues)) {
+				shouldUpdate = false
+			}
 		}
 
 		// Reference the updateSlugs settings to determine if user wants slugs to be updated.
@@ -52,9 +58,10 @@ module.exports = ({ strapi }) => ({
 			referenceFieldValues = referenceFieldValues.join(' ');
 			if (settings.slugifyWithCount) {
 				data[field] = toSlugWithCount(referenceFieldValues, settings.slugifyOptions);
-			} else {
-				data[field] = toSlug(referenceFieldValues, settings.slugifyOptions);
+				return
 			}
+
+			data[field] = toSlug(referenceFieldValues, settings.slugifyOptions);
 		}
 
 	},
