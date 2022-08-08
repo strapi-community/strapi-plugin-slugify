@@ -49,7 +49,7 @@ module.exports = ({ strapi }) => ({
 
 		// Reference the updateSlugs settings to determine if user wants slugs to be updated.
 		// If there isn't a current reference then proceed.
-		if ((shouldUpdate && settings.updateSlugs) || !current || !data[field]) {
+		if ((shouldUpdate && settings.shoudUpdateSlug) || !current || !data[field]) {
 			const hasUndefinedFields = referenceFieldValues.length < references.length;
 			if ((!settings.skipUndefinedReferences && hasUndefinedFields) || !referenceFieldValues.length) {
 				return;
