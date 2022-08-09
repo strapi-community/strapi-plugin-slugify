@@ -8,6 +8,7 @@ module.exports = {
 			contentTypes: {},
 			slugifyOptions: {},
 			slugifyWithCount: false,
+			shouldUpdateSlug: false,
 			skipUndefinedReferences: false,
 		};
 	},
