@@ -64,16 +64,17 @@ Per [#35](https://github.com/ComfortablyCoding/strapi-plugin-slugify/issues/35) 
 
 ## The Complete Plugin Configuration Object
 
-| Property | Description | Type | Default | Required |
-| -------- | ----------- | ---- | ------- | -------- |
-| contentTypes | The Content Types to add auto slugification and search findOne by slug search utility to | Object | {} | No |
-| contentTypes[modelName] | The model name of the content type (it is the `singularName` in the [model schema](https://docs.strapi.io/developer-docs/latest/development/backend-customization/models.html#model-schema)) | String | N/A | Yes |
-| contentTypes[modelName]field | The name of the field to add the slug  | String | N/A | Yes |
-| contentTypes[modelName]references | The name(s) of the field(s) used to build the slug. If an array of fields is set it will result in a compound slug | String or Array | N/A | Yes |
-| slugifyWithCount | Duplicate strings will have their occurrence appended to the end of the slug | Boolean | false | No |
-| shouldUpdateSlug | Allow the slug to be updated after initial generation. | Boolean | false | No |
-| skipUndefinedReferences | Skip reference fields that have no data. Mostly applicable to compound slug | Boolean | false | No |
-| slugifyOptions | The options to pass the the slugify function. All options can be found in the [slugify docs](https://github.com/sindresorhus/slugify#api) | Object | {} | No |
+| Property | Description                                                                                                                                                                                  | Type | Default | Required |
+| -------- |----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| ---- | ------- |----------|
+| contentTypes | The Content Types to add auto slugification and search findOne by slug search utility to                                                                                                     | Object | {} | No       |
+| contentTypes[modelName] | The model name of the content type (it is the `singularName` in the [model schema](https://docs.strapi.io/developer-docs/latest/development/backend-customization/models.html#model-schema)) | String | N/A | Yes      |
+| contentTypes[modelName]component | The name of the related component (it is the `component` in the [model attributes](https://docs.strapi.io/developer-docs/latest/development/backend-customization/models.html#model-attributes)) | String | N/A | No       |
+| contentTypes[modelName]field | The name of the field to add the slug                                                                                                                                                        | String | N/A | Yes      |
+| contentTypes[modelName]references | The name(s) of the field(s) used to build the slug. If an array of fields is set it will result in a compound slug                                                                           | String or Array | N/A | Yes      |
+| slugifyWithCount | Duplicate strings will have their occurrence appended to the end of the slug                                                                                                                 | Boolean | false | No       |
+| shouldUpdateSlug | Allow the slug to be updated after initial generation.                                                                                                                                       | Boolean | false | No       |
+| skipUndefinedReferences | Skip reference fields that have no data. Mostly applicable to compound slug                                                                                                                  | Boolean | false | No       |
+| slugifyOptions | The options to pass the the slugify function. All options can be found in the [slugify docs](https://github.com/sindresorhus/slugify#api)                                                    | Object | {} | No       |
 
 ## Usage
 
@@ -152,16 +153,16 @@ If an article with the slug of `lorem-ipsum-dolor` exists the response will look
 
 ```json
 {
-  "data": {
-    "id": 1,
-    "attributes":{
-      "title": "lorem ipsum dolor",
-      "slug": "lorem-ipsum-dolor",
-      "createdAt": "2022-02-17T01:49:31.961Z",
-      "updatedAt": "2022-02-17T03:47:09.950Z",
-      "publishedAt": null
-    }
-  }
+	"data": {
+		"id": 1,
+		"attributes":{
+			"title": "lorem ipsum dolor",
+			"slug": "lorem-ipsum-dolor",
+			"createdAt": "2022-02-17T01:49:31.961Z",
+			"updatedAt": "2022-02-17T03:47:09.950Z",
+			"publishedAt": null
+		}
+	}
 }
 ```
 
@@ -171,13 +172,13 @@ To be inline with Strapi's default behavior for single types if an article with 
 
 ```json
 {
-  "data": null,
-  "error": { 
-    "status": 404, 
-    "name": "NotFoundError", 
-    "message": "Not Found", 
-    "details": {} 
-  }
+	"data": null,
+	"error": {
+		"status": 404,
+		"name": "NotFoundError",
+		"message": "Not Found",
+		"details": {}
+	}
 }
 ```
 
@@ -187,16 +188,16 @@ To be inline with Strapi's default behavior for single types if an article with 
 
 ```json
 {
-  "data": {
-    "findSlug": {
-      "data": {
-        "id": "1",
-        "attributes": {
-          "title": "lorem ipsum dolor"
-        }
-      }
-    }
-  }
+	"data": {
+		"findSlug": {
+			"data": {
+				"id": "1",
+				"attributes": {
+					"title": "lorem ipsum dolor"
+				}
+			}
+		}
+	}
 }
 ```
 
@@ -205,11 +206,11 @@ To be inline with Strapi's default behavior for single types if an article with 
 
 ```json
 {
-  "data": {
-    "findSlug": {
-      "data": null
-    }
-  }
+	"data": {
+		"findSlug": {
+			"data": null
+		}
+	}
 }
 ```
 

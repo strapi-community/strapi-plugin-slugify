@@ -13,8 +13,7 @@ module.exports = ({ strapi }) => ({
 	},
 	build(settings) {
 		// build models
-		settings.modelsByUID = {};
-		settings.modelsByName = {};
+		settings.models = {};
 		_.each(strapi.contentTypes, (contentType, uid) => {
 			const model = settings.contentTypes[contentType.modelName];
 			if (!model) {
@@ -22,8 +21,17 @@ module.exports = ({ strapi }) => ({
 			}
 
 			// ensure provided fields are present on the model
-			const hasField = isValidModelField(contentType, model.field);
-			if (!hasField) {
+			let hasField = false;
+			let hasComponentField = false;
+
+			if(model.component && strapi.components[model.component]) {
+				hasComponentField = isValidModelField(strapi.components[model.component], model.field);
+			}
+			if(!model.component) {
+				hasField = isValidModelField(contentType, model.field);
+			}
+
+			if (!hasField && !hasComponentField) {
 				strapi.log.warn(
 					`[slugify] skipping ${contentType.info.singularName} registration, invalid field provided.`
 				);
@@ -31,9 +39,7 @@ module.exports = ({ strapi }) => ({
 			}
 
 			let references = _.isArray(model.references) ? model.references : [model.references];
-			const hasReferences = references.every((referenceField) =>
-				isValidModelField(contentType, referenceField)
-			);
+			const hasReferences = references.every((r) => isValidModelField(contentType, r) || (model.component && strapi.components[model.component] && isValidModelField(strapi.components[model.component], r)));
 			if (!hasReferences) {
 				strapi.log.warn(
 					`[slugify] skipping ${contentType.info.singularName} registration, invalid reference field provided.`
@@ -41,14 +47,17 @@ module.exports = ({ strapi }) => ({
 				return;
 			}
 
+			uid = model.component && strapi.components[model.component] ? model.component : uid;
+
 			const data = {
 				uid,
 				...model,
 				contentType,
 				references,
 			};
-			settings.modelsByUID[uid] = data;
-			settings.modelsByName[contentType.modelName] = data;
+
+			settings.models[uid] = data;
+			settings.models[contentType.modelName] = data;
 		});
 
 		_.omit(settings, ['contentTypes']);
