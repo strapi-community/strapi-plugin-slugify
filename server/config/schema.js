@@ -3,7 +3,7 @@
 const yup = require('yup');
 const _ = require('lodash');
 
-const pluginConfigSchema = yup.object().shape({
+const schema = yup.object().shape({
 	slugifyOptions: yup.object(),
 	contentTypes: yup.lazy((obj) => {
 		let shape = {};
@@ -22,6 +22,4 @@ const pluginConfigSchema = yup.object().shape({
 	skipUndefinedReferences: yup.bool(),
 });
 
-module.exports = {
-	pluginConfigSchema,
-};
+module.exports = schema;
