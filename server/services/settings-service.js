@@ -13,7 +13,8 @@ module.exports = ({ strapi }) => ({
 	},
 	build(settings) {
 		// build models
-		settings.models = {};
+		settings.modelsByUID = {};
+		settings.modelsByName = {};
 		_.each(strapi.contentTypes, (contentType, uid) => {
 			const model = settings.contentTypes[contentType.modelName];
 			if (!model) {
@@ -30,7 +31,9 @@ module.exports = ({ strapi }) => ({
 			}
 
 			let references = _.isArray(model.references) ? model.references : [model.references];
-			const hasReferences = references.every((r) => isValidModelField(contentType, r));
+			const hasReferences = references.every((referenceField) =>
+				isValidModelField(contentType, referenceField)
+			);
 			if (!hasReferences) {
 				strapi.log.warn(
 					`[slugify] skipping ${contentType.info.singularName} registration, invalid reference field provided.`
@@ -44,8 +47,8 @@ module.exports = ({ strapi }) => ({
 				contentType,
 				references,
 			};
-			settings.models[uid] = data;
-			settings.models[contentType.modelName] = data;
+			settings.modelsByUID[uid] = data;
+			settings.modelsByName[contentType.modelName] = data;
 		});
 
 		_.omit(settings, ['contentTypes']);
