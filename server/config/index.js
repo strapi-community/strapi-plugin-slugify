@@ -1,11 +1,8 @@
 'use strict';
 
-const { pluginConfigSchema } = require('./schema');
+const schema = require('./schema');
 
 module.exports = {
-	async validator(config) {
-		await pluginConfigSchema.validate(config);
-	},
 	default: () => ({
 		contentTypes: {},
 		slugifyOptions: {},
@@ -13,4 +10,5 @@ module.exports = {
 		shouldUpdateSlug: false,
 		skipUndefinedReferences: false,
 	}),
+	validator: (config) => schema.validateSync(config),
 };
