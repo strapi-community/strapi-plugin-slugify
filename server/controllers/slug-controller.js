@@ -10,17 +10,17 @@ const { hasRequiredModelScopes } = require('../utils/hasRequiredModelScopes');
 
 module.exports = ({ strapi }) => ({
 	async findSlug(ctx) {
-		const { models } = getPluginService('settingsService').get();
+		const { modelsByName } = getPluginService('settingsService').get();
 		const { modelName, slug } = ctx.request.params;
 		const { auth } = ctx.state;
 
 		isValidFindSlugParams({
 			modelName,
 			slug,
-			models,
+			modelsByName,
 		});
 
-		const { uid, field, contentType } = models[modelName];
+		const { uid, field, contentType } = modelsByName[modelName];
 
 		await hasRequiredModelScopes(strapi, uid, auth);
 

@@ -6,8 +6,8 @@ const isValidFindSlugParams = (params) => {
 		throw new ValidationError('A model and slug must be provided.');
 	}
 
-	const { modelName, slug, models, publicationState } = params;
-	const model = models[modelName];
+	const { modelName, slug, modelsByName, publicationState } = params;
+	const model = modelsByName[modelName];
 
 	if (!modelName) {
 		throw new ValidationError('A model name path variable is required.');

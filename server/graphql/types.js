@@ -7,16 +7,16 @@ const { sanitizeOutput } = require('../utils/sanitizeOutput');
 const getCustomTypes = (strapi, nexus) => {
 	const { naming } = getPluginService('utils', 'graphql');
 	const { toEntityResponse } = getPluginService('format', 'graphql').returnTypes;
-	const { models } = getPluginService('settingsService').get();
+	const { modelsByUID } = getPluginService('settingsService').get();
 	const { getEntityResponseName } = naming;
 
 	// get all types required for findSlug query
 	let findSlugTypes = {
 		response: [],
 	};
-	_.forEach(strapi.contentTypes, (value, key) => {
-		if (models[key]) {
-			findSlugTypes.response.push(getEntityResponseName(value));
+	_.forEach(strapi.contentTypes, (contentType, uid) => {
+		if (modelsByUID[uid]) {
+			findSlugTypes.response.push(getEntityResponseName(contentType));
 		}
 	});
 
@@ -33,7 +33,7 @@ const getCustomTypes = (strapi, nexus) => {
 			t.members(...findSlugTypes.response);
 		},
 		resolveType: (ctx) => {
-			return getEntityResponseName(models[ctx.info.resourceUID].contentType);
+			return getEntityResponseName(modelsByUID[ctx.info.resourceUID].contentType);
 		},
 	});
 
@@ -50,18 +50,18 @@ const getCustomTypes = (strapi, nexus) => {
 						publicationState: nexus.stringArg('The publication state of the entry'),
 					},
 					resolve: async (_parent, args, ctx) => {
-						const { models } = getPluginService('settingsService').get();
+						const { modelsByName } = getPluginService('settingsService').get();
 						const { modelName, slug, publicationState } = args;
 						const { auth } = ctx.state;
 
 						isValidFindSlugParams({
 							modelName,
 							slug,
-							models,
+							modelsByName,
 							publicationState,
 						});
 
-						const { uid, field, contentType } = models[modelName];
+						const { uid, field, contentType } = modelsByName[modelName];
 
 						await hasRequiredModelScopes(strapi, uid, auth);
 
