@@ -7,7 +7,7 @@ const { pluginId } = require('./pluginId');
  *
  * @return service
  */
-const getPluginService = (strapi, name, plugin = pluginId) => strapi.plugin(plugin).service(name);
+const getPluginService = (name, plugin = pluginId) => strapi.plugin(plugin).service(name);
 
 module.exports = {
 	getPluginService,
