@@ -10,7 +10,7 @@ const { hasRequiredModelScopes } = require('../utils/hasRequiredModelScopes');
 
 module.exports = ({ strapi }) => ({
 	async findSlug(ctx) {
-		const { models } = getPluginService(strapi, 'settingsService').get();
+		const { models } = getPluginService('settingsService').get();
 		const { modelName, slug } = ctx.request.params;
 		const { auth } = ctx.state;
 
@@ -36,7 +36,7 @@ module.exports = ({ strapi }) => ({
 			query.publicationState = 'live';
 		}
 
-		const data = await getPluginService(strapi, 'slugService').findOne(uid, query);
+		const data = await getPluginService('slugService').findOne(uid, query);
 
 		if (data) {
 			const sanitizedEntity = await sanitizeOutput(data, contentType, auth);

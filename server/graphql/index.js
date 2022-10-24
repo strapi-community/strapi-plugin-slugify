@@ -11,7 +11,7 @@ const registerGraphlQLQuery = (strapi) => {
 		resolversConfig: getResolversConfig(),
 	});
 
-	getPluginService(strapi, 'extension', 'graphql').use(extension);
+	getPluginService('extension', 'graphql').use(extension);
 };
 
 module.exports = {

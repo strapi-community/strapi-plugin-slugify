@@ -5,9 +5,9 @@ const { hasRequiredModelScopes } = require('../utils/hasRequiredModelScopes');
 const { sanitizeOutput } = require('../utils/sanitizeOutput');
 
 const getCustomTypes = (strapi, nexus) => {
-	const { naming } = getPluginService(strapi, 'utils', 'graphql');
-	const { toEntityResponse } = getPluginService(strapi, 'format', 'graphql').returnTypes;
-	const { models } = getPluginService(strapi, 'settingsService').get();
+	const { naming } = getPluginService('utils', 'graphql');
+	const { toEntityResponse } = getPluginService('format', 'graphql').returnTypes;
+	const { models } = getPluginService('settingsService').get();
 	const { getEntityResponseName } = naming;
 
 	// get all types required for findSlug query
@@ -50,7 +50,7 @@ const getCustomTypes = (strapi, nexus) => {
 						publicationState: nexus.stringArg('The publication state of the entry'),
 					},
 					resolve: async (_parent, args, ctx) => {
-						const { models } = getPluginService(strapi, 'settingsService').get();
+						const { models } = getPluginService('settingsService').get();
 						const { modelName, slug, publicationState } = args;
 						const { auth } = ctx.state;
 
@@ -77,7 +77,7 @@ const getCustomTypes = (strapi, nexus) => {
 							query.publicationState = publicationState || 'live';
 						}
 
-						const data = await getPluginService(strapi, 'slugService').findOne(uid, query);
+						const data = await getPluginService('slugService').findOne(uid, query);
 						const sanitizedEntity = await sanitizeOutput(data, contentType, auth);
 						return toEntityResponse(sanitizedEntity, { resourceUID: uid });
 					},
