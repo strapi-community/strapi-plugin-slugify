@@ -21,13 +21,13 @@ const syncSlugCount = async (settings) => {
 		}
 
 		const model = settings.modelsByUID[uid];
-		strapi.log.info(`[slugify] syncing slug count for ${model.uid}`);
 
 		// using db query to avoid the need to check if CT has draftAndPublish enabled
 		const modelEntries = await strapi.db.query(model.uid).findMany({
 			filters: { createdAt: { $gt: 1 } },
 		});
 
+		strapi.log.info(`[slugify] syncing slug count for ${model.uid}`);
 		for (const entry of modelEntries) {
 			const slug = entry[model.field];
 			if (!slug) {
@@ -45,14 +45,18 @@ const syncSlugCount = async (settings) => {
 		strapi.log.info(`[slugify] sync for ${model.uid} completed`);
 	}
 
-	// create all required records
-	const createResponse = await strapi.db.query('plugin::slugify.slug').createMany({
-		data: [...slugs.values()],
-	});
+	if (slugs.size) {
+		// create all required records
+		const createResponse = await strapi.db.query('plugin::slugify.slug').createMany({
+			data: [...slugs.values()],
+		});
 
-	strapi.log.info(
-		`[slugify] ${createResponse.count} out of ${slugs.size} slugs synced successfully`
-	);
+		strapi.log.info(
+			`[slugify] ${createResponse.count} out of ${slugs.size} slugs synced successfully`
+		);
+	} else {
+		strapi.log.info('[slugify] No syncable slugs found');
+	}
 };
 
 // removes any appended number from a slug/string if found
