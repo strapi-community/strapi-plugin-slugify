@@ -1,10 +1,10 @@
 'use strict';
 
 const _ = require('lodash');
-const { toSlug } = require('../../utils/slugification');
 const { getPluginService } = require('../../utils/getPluginService');
 const { shouldUpdateSlug } = require('./shoudUpdateSlug');
 const { getReferenceFieldValues } = require('./getReferenceFieldValues');
+const { buildSlug } = require('./buildSlug');
 
 module.exports = ({ strapi }) => ({
 	async slugify(ctx) {
@@ -40,13 +40,10 @@ module.exports = ({ strapi }) => ({
 		}
 
 		referenceFieldValues = referenceFieldValues.join(' ');
-		const toSlugOptions = settings.slugifyOptions;
-		if (settings.slugifyWithCount) {
-			toSlugOptions.slugifyWithCount = settings.slugifyWithCount;
-		}
 
 		// update slug field based on action type
-		const slug = toSlug(referenceFieldValues, toSlugOptions);
+		const slug = await buildSlug(referenceFieldValues, settings);
+
 		if (ctx.action === 'beforeCreate' || ctx.action === 'beforeUpdate') {
 			data[field] = slug;
 		} else if (ctx.action === 'afterCreate') {
