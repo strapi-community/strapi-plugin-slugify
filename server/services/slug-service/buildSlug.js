@@ -4,33 +4,35 @@ const buildSlug = async (string, settings) => {
 	let slug = slugify(string, settings.slugifyOptions);
 
 	// slugify with count
-	if (settings.slugifyWithCount) {
-		const slugEntry = await strapi.db.query('plugin::slugify.slug').findOne({
-			select: ['id', 'count'],
-			where: { slug },
-		});
+	if (!settings.slugifyWithCount) {
+		return slug;
+	}
 
-		if (!slugEntry) {
-			await strapi.entityService.create('plugin::slugify.slug', {
-				data: {
-					slug,
-					count: 1,
-				},
-			});
+	const slugEntry = await strapi.db.query('plugin::slugify.slug').findOne({
+		select: ['id', 'count'],
+		where: { slug },
+	});
 
-			return slug;
-		}
-		const count = slugEntry.count + 1;
-		await strapi.entityService.update('plugin::slugify.slug', slugEntry.id, {
+	// if no result then count is 1 and base slug is returned
+	if (!slugEntry) {
+		await strapi.entityService.create('plugin::slugify.slug', {
 			data: {
-				count,
+				slug,
+				count: 1,
 			},
 		});
 
-		return `${slug}-${count}`;
+		return slug;
 	}
 
-	return slug;
+	const count = slugEntry.count + 1;
+	await strapi.entityService.update('plugin::slugify.slug', slugEntry.id, {
+		data: {
+			count,
+		},
+	});
+
+	return `${slug}-${count}`;
 };
 
 module.exports = {
