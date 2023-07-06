@@ -1,6 +1,6 @@
 {
 	"$schema": "https://json.schemastore.org/package",
-	"name": "strapi-plugin-slugify",
+	"name": "strapi-plugin-slugify-error-fix",
 	"version": "2.3.3",
 	"description": "A plugin for Strapi Headless CMS that provides the ability to auto slugify a field for any content type.",
 	"scripts": {
