@@ -1,4 +1,4 @@
-const { contentAPI } = require('@strapi/utils/lib/sanitize');
+const { contentAPI } = require('@strapi/utils');
 
 const sanitizeOutput = (data, contentType, auth) => contentAPI.output(data, contentType, { auth });
 
