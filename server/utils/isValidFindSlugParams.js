@@ -1,4 +1,4 @@
-const { ValidationError } = require('@strapi/utils/lib/errors');
+const { ValidationError } = require('@strapi/utils');
 const _ = require('lodash');
 
 const isValidFindSlugParams = (params) => {
