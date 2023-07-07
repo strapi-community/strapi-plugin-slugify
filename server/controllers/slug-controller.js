@@ -1,7 +1,7 @@
 'use strict';
 
 const _ = require('lodash');
-const { NotFoundError } = require('@strapi/utils');
+const { NotFoundError } = require('@strapi/utils').errors;
 const { getPluginService } = require('../utils/getPluginService');
 const { transformResponse } = require('@strapi/strapi/lib/core-api/controller/transform');
 const { isValidFindSlugParams } = require('../utils/isValidFindSlugParams');

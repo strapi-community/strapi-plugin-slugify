@@ -1,4 +1,4 @@
-const { ForbiddenError } = require('@strapi/utils');
+const { ForbiddenError } = require('@strapi/utils').errors;
 
 const hasRequiredModelScopes = async (strapi, uid, auth) => {
 	try {
