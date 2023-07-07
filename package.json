@@ -1,7 +1,7 @@
 {
 	"$schema": "https://json.schemastore.org/package",
-	"name": "strapi-plugin-slugify-error-fix",
-	"version": "2.3.3",
+	"name": "strapi-plugin-slugify",
+	"version": "2.3.2",
 	"description": "A plugin for Strapi Headless CMS that provides the ability to auto slugify a field for any content type.",
 	"scripts": {
 		"lint": "eslint . --fix",
@@ -13,17 +13,17 @@
 	},
 	"maintainers": [
 		{
-			"name": "Max Starr",
-			"url": "https://github.com/maxostarr"
+			"name": "@ComfortablyCoding",
+			"url": "https://github.com/ComfortablyCoding"
 		}
 	],
-	"homepage": "https://github.com/maxostarr/strapi-plugin-slugify#readme",
+	"homepage": "https://github.com/ComfortablyCoding/strapi-plugin-slugify#readme",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/maxostarr/strapi-plugin-slugify.git"
+		"url": "https://github.com/ComfortablyCoding/strapi-plugin-slugify.git"
 	},
 	"bugs": {
-		"url": "https://github.com/maxostarr/strapi-plugin-slugify/issues"
+		"url": "https://github.com/ComfortablyCoding/strapi-plugin-slugify/issues"
 	},
 	"dependencies": {
 		"@sindresorhus/slugify": "1.1.0"
