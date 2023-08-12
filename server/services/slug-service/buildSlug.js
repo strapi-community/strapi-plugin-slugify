@@ -32,7 +32,7 @@ const buildSlug = async (string, settings) => {
 		},
 	});
 
-	return `${slug}-${count}`;
+	return `${slug}${settings.slugifyOptions?.separator ? settings.slugifyOptions?.separator : '-'}${count}`;
 };
 
 module.exports = {
