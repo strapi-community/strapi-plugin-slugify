@@ -3,7 +3,7 @@
 const _ = require('lodash');
 const { NotFoundError } = require('@strapi/utils').errors;
 const { getPluginService } = require('../utils/getPluginService');
-const { transformResponse } = require('@strapi/strapi/lib/core-api/controller/transform');
+const { transformResponse } = require('@strapi/strapi/dist/core-api/controller/transform');
 const { isValidFindSlugParams } = require('../utils/isValidFindSlugParams');
 const { sanitizeOutput } = require('../utils/sanitizeOutput');
 const { hasRequiredModelScopes } = require('../utils/hasRequiredModelScopes');
