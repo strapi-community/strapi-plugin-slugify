@@ -29,14 +29,14 @@
 		"@sindresorhus/slugify": "1.1.0"
 	},
 	"devDependencies": {
-		"eslint": "^8.8.0",
-		"eslint-config-prettier": "^8.3.0",
+		"eslint": "^8.50.0",
+		"eslint-config-prettier": "^9.0.0",
 		"eslint-plugin-node": "^11.1.0",
-		"prettier": "^2.5.1"
+		"prettier": "^3.0.3"
 	},
 	"peerDependencies": {
-		"@strapi/strapi": "^4.0.7",
-		"@strapi/utils": "^4.0.7",
+		"@strapi/strapi": "^4.14.0",
+		"@strapi/utils": "^4.14.0",
 		"lodash": "^4.17.21",
 		"yup": "^0.32.9"
 	},
