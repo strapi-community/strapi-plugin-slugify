@@ -1,7 +1,6 @@
 'use strict';
 
 const _ = require('lodash');
-const { NotFoundError } = require('@strapi/utils').errors;
 const { getPluginService } = require('../utils/getPluginService');
 const { isValidFindSlugParams } = require('../utils/isValidFindSlugParams');
 const { sanitizeOutput } = require('../utils/sanitizeOutput');
@@ -14,15 +13,23 @@ module.exports = ({ strapi }) => ({
 		const { modelName, slug } = ctx.request.params;
 		const { auth } = ctx.state;
 
-		isValidFindSlugParams({
-			modelName,
-			slug,
-			modelsByName,
-		});
+		try {
+			isValidFindSlugParams({
+				modelName,
+				slug,
+				modelsByName,
+			});
+		} catch (error) {
+			return ctx.badRequest(error.message);
+		}
 
 		const { uid, field, contentType } = modelsByName[modelName];
 
-		await hasRequiredModelScopes(strapi, uid, auth);
+		try {
+			await hasRequiredModelScopes(strapi, uid, auth);
+		} catch (error) {
+			return ctx.forbidden();
+		}
 
 		// add slug filter to any already existing query restrictions
 		let query = ctx.query || {};
@@ -42,7 +49,7 @@ module.exports = ({ strapi }) => ({
 			const sanitizedEntity = await sanitizeOutput(data, contentType, auth);
 			ctx.body = transform.response({ data: sanitizedEntity, schema: contentType });
 		} else {
-			throw new NotFoundError();
+			ctx.notFound();
 		}
 	},
 });

@@ -1,12 +1,5 @@
-const { ForbiddenError } = require('@strapi/utils').errors;
-
-const hasRequiredModelScopes = async (strapi, uid, auth) => {
-	try {
-		await strapi.auth.verify(auth, { scope: `${uid}.find` });
-	} catch (e) {
-		throw new ForbiddenError();
-	}
-};
+const hasRequiredModelScopes = (strapi, uid, auth) =>
+	strapi.auth.verify(auth, { scope: `${uid}.find` });
 
 module.exports = {
 	hasRequiredModelScopes,
