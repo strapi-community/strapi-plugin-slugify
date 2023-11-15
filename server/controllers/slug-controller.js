@@ -3,10 +3,10 @@
 const _ = require('lodash');
 const { NotFoundError } = require('@strapi/utils').errors;
 const { getPluginService } = require('../utils/getPluginService');
-const { transformResponse } = require('@strapi/strapi/dist/core-api/controller/transform');
 const { isValidFindSlugParams } = require('../utils/isValidFindSlugParams');
 const { sanitizeOutput } = require('../utils/sanitizeOutput');
 const { hasRequiredModelScopes } = require('../utils/hasRequiredModelScopes');
+const transform = require('../utils/transform');
 
 module.exports = ({ strapi }) => ({
 	async findSlug(ctx) {
@@ -40,7 +40,7 @@ module.exports = ({ strapi }) => ({
 
 		if (data) {
 			const sanitizedEntity = await sanitizeOutput(data, contentType, auth);
-			ctx.body = transformResponse(sanitizedEntity, {}, { contentType });
+			ctx.body = transform.response({ data: sanitizedEntity, schema: contentType });
 		} else {
 			throw new NotFoundError();
 		}
