@@ -3,6 +3,7 @@ const { getPluginService } = require('../utils/getPluginService');
 const { isValidFindSlugParams } = require('../utils/isValidFindSlugParams');
 const { hasRequiredModelScopes } = require('../utils/hasRequiredModelScopes');
 const { sanitizeOutput } = require('../utils/sanitizeOutput');
+const { ForbiddenError, ValidationError } = require('@strapi/utils').errors;
 
 const getCustomTypes = (strapi, nexus) => {
 	const { naming } = getPluginService('utils', 'graphql');
@@ -54,16 +55,23 @@ const getCustomTypes = (strapi, nexus) => {
 						const { modelName, slug, publicationState } = args;
 						const { auth } = ctx.state;
 
-						isValidFindSlugParams({
-							modelName,
-							slug,
-							modelsByName,
-							publicationState,
-						});
-
+						try {
+							isValidFindSlugParams({
+								modelName,
+								slug,
+								modelsByName,
+								publicationState,
+							});
+						} catch (error) {
+							throw new ValidationError(error.message);
+						}
 						const { uid, field, contentType } = modelsByName[modelName];
 
-						await hasRequiredModelScopes(strapi, uid, auth);
+						try {
+							await hasRequiredModelScopes(strapi, uid, auth);
+						} catch (error) {
+							throw new ForbiddenError();
+						}
 
 						// build query
 						let query = {
