@@ -54,7 +54,9 @@ module.exports = ({ env }) => ({
 
 This will listen for any record created or updated in the article content type and set a slugified value for the slug field automatically based on the title field.
 
-> Note that if you want to rewrite the same field (so `title` is both a reference and a slug) then you just put `title` for both the `field` and `references` properties.
+> Note 1: if you want to rewrite the same field (so `title` is both a reference and a slug) then you just put `title` for both the `field` and `references` properties.
+
+> Note 2: it is possible to use multiple fields as references by passing an array of fields (e.g. `references: ['date','title']`)
 
 **IMPORTANT NOTE**: Make sure any sensitive data is stored in env files.
 
