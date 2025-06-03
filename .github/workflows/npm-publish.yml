@@ -16,7 +16,7 @@ jobs:
       - name: Install Node v18
         uses: actions/setup-node@v2
         with:
-          node-version: '18.x'
+          node-version: '22.x'
           registry-url: 'https://registry.npmjs.org'
 
       - name: Install Yarn
