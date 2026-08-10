@@ -30,7 +30,7 @@
 		"@strapi/strapi": "^5.14.0",
 		"@strapi/utils": "^5.14.0",
 		"lodash": "^4.17.21",
-		"yup": "^0.32.9"
+	  "yup": "^1.6.1"
 	},
 	"devDependencies": {
 		"eslint": "^9.28.0",
